@@ -25,16 +25,16 @@ modApi.getTickerSymbol = function(name) {
 
 };
 
-// API test
-// var test = modApi.getTickerSymbol("netflix");
-// console.log(test);
-
 // get stock data
 modApi.getStockData = function(stockSymbol)	{
 	var url = "http://dev.markitondemand.com/MODApis/Api/v2/Quote/jsonp"
 	var request = {
-		symbol: stockSymbol,
-		callback: symbolResults
+		url: url,
+		data: {
+			symbol: stockSymbol
+		},
+		callback: "my_function",
+		dataType: "jsonp"
 	}
 	return $.ajax(url, request);
 };
@@ -54,17 +54,33 @@ View.fetchUserQuery = function()	{
 View.postSymbolResults = function(results)	{
 	$.each(results, function(i,item)	{
 		var data = View.genSymbolResultsHtml(item);
-		$('div#symbolArea').append(data);
+		$('ul#symbolArea').append(data);
 	});
 };
 
 // generate symbol html
 View.genSymbolResultsHtml = function(item) {
 	var html = "";
-	html += "<ul><li><a class='stock'>" + item.Symbol + "</a>, " + item.Name + ", " + item.Exchange + "</li></ul";
+	html += "<li><a class='stock'>" + item.Symbol + "</a>, " + item.Name + ", " + item.Exchange + "</li>";
 	return html;
 };
 
+// post stock info
+View.postStockResults = function(stockData) {
+	var i = 1;
+	$.each(stockData, function(i, item)	{
+		console.log(i, item);
+		var html = View.genStockResultsHtml(i, item);
+		$('div#stockArea').append(html);
+	});
+};
+
+// generate stock html
+View.genStockResultsHtml = function(i, data) {
+	var html = "";
+	html += "<p><b>" + i + "</b>: " + data + "</p>";
+	return html;
+}
 // get query from input
 $(function() {
 	$('form').submit(function(e)	{
@@ -81,5 +97,10 @@ $(function() {
 		console.log(this);
 		var stock = $(this).text();
 		console.log(stock);
+		var results = modApi.getStockData(stock)
+					.then(function(results)	{
+						console.log(results);
+						View.postStockResults(results);
+					});
 	});
 });
