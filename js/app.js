@@ -11,13 +11,18 @@ var View = {};
 
 // get ticker symbol
 modApi.getTickerSymbol = function(name) {
-	var url = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/jsonp"
-	var request = {
-		input: name,
-		callback: "my_function"
-	}
+    var url = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/jsonp"
+    var request = {
+        url: url,
+        data: {
+					input: name
+				},
+        callback: "my_function",
+        dataType: "jsonp"
+    }
 		console.log(request);
-	return $.getJSON(url, request);
+    return $.ajax(request);
+
 };
 
 // API test
@@ -31,8 +36,7 @@ modApi.getStockData = function(stockSymbol)	{
 		symbol: stockSymbol,
 		callback: symbolResults
 	}
-
-	return $.getJSON(url, request);
+	return $.ajax(url, request);
 };
 
 // generate views
@@ -57,7 +61,7 @@ View.postSymbolResults = function(results)	{
 // generate symbol html
 View.genSymbolResultsHtml = function(item) {
 	var html = "";
-	html += "<ul><li>" + item.Symbol + ", " + item.Name + ", " + item.Exchange + "</li></ul";
+	html += "<ul><li><a class='stock'>" + item.Symbol + "</a>, " + item.Name + ", " + item.Exchange + "</li></ul";
 	return html;
 };
 
@@ -67,9 +71,15 @@ $(function() {
 		e.preventDefault();
 		View.clearSymbolArea();
 		var query = View.fetchUserQuery();
-		modApi.getTickerSymbol(query)
-		.then(function(results) {
-			View.postSymbolResults(results);
-		});
+		var results = modApi.getTickerSymbol(query)
+					.then(function(results) {
+					View.postSymbolResults(results);
+					});
+	});
+	$('#symbol').on('click', '.stock', function(e){
+		e.preventDefault();
+		console.log(this);
+		var stock = $(this).text();
+		console.log(stock);
 	});
 });
