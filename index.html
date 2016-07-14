@@ -12,26 +12,56 @@
 
 <body>
 	<div class="container-fluid">
+
+		<!-- Title -->
 		<div class="row" id="header">
 			<div class="col-md-12">
 				<h2>Stock Market Quotes</h2>
 				<h6>Quotes from <em>Marketondemand.com</em></h6>
 			</div>
 		</div>
+
+		<!-- Enter stock symbol -->
 		<div class="row" id="enterName">
-			<div class="col-lg-3">
+			<div class="col-md-3">
 				<form>
-					<div class="input-group">
-						<input type="text" class="form-control" id="companyName" placeholder="Enter Company name..." onclick="this.value=''">
+					<div class="input-group input-group-sm">
+						<input type="text" class="form-control" id="companyName" placeholder="Enter Company name..." onclick="this.value=''" autofocus>
 						<span class="input-group-btn">
 						<button type="submit" class="btn btn-primary" id="button1">Submit</button>
 						</span>
 					</div>
 				</form>
 			</div>
-			<div class="col-lg-9"></div>
+			<div class="col-md-9"></div>
 		</div>
 		<hr>
+
+		<!-- Login / Create account -->
+		<div class="row" id="account">
+			<div class="col-md-3">
+				<h4 class="text-left login-title">Account Login/Create</h4>
+				<form class="form-signin">
+					<div class="input-group input-group-sm">
+					<input type="text" class="form-control" placeholder="User Name" required>
+					<input type="password" class="form-control" placeholder="Password" required>
+					<button class="btn btn-sm btn-primary btn-block" type="submit">
+						Sign in</button>
+					</div>
+				</form>
+			</div>
+			<!-- Account Portfolio -->
+			<div class="col-md-1"></div>
+			<div class="col-md-8">
+				<h4 class="text">Portfolio</h4>
+				<p class="text" id="userName">User Name: </p>
+				<p class="text" id="userStockList">Stocks: </p>
+			</div>
+		</div>
+		<hr>
+
+		<!-- Stock Data Display -->
+		<!-- Stock symbol display -->
 		<div class="row">
 			<div class="col-md-4" id="symbol">
 				<h4>Symbol</h4>
@@ -39,9 +69,20 @@
 				<div id="symbolHistory"></div>
 				<hr>
 			</div>
+			<!-- Stock data display -->
 			<div class="col-md-4" id="stockInfoArea">
 				<h4>Info</h4>
 				<p id="stockInfoStart"></p>
+				<!-- Add/remove button -->
+				<div class="btn-group">
+					<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">Add Stock to Portfolio</a></li>
+						<li><a href="#">Remove Stock from Portfolio</a></li>
+					</ul>
+				</div>
 				<hr>
 			</div>
 			<div class="col-md-4" id="stockArea"></div>
