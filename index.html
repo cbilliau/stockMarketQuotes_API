@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="styles/style.css">
@@ -8,37 +9,41 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<title>Market Direct API</title>
 </head>
+
 <body>
 	<div class="container-fluid">
 		<div class="row" id="header">
-		  <div class="col-md-12">
-		  	<h2>Stock Market Quotes</h2>
+			<div class="col-md-12">
+				<h2>Stock Market Quotes</h2>
 				<h6>Quotes from <em>Marketondemand.com</em></h6>
-		  </div>
+			</div>
 		</div>
 		<div class="row" id="enterName">
-		  <div class="col-lg-6">
+			<div class="col-lg-3">
 				<form>
-			    <div class="form-group">
-						<input type="text" class="form-control" id="companyName" placeholder="Enter Company name...">
-						<button type="submit" class="btn btn-primary">Submit</button>
-			    </div>
+					<div class="input-group">
+						<input type="text" class="form-control" id="companyName" placeholder="Enter Company name..." onclick="this.value=''">
+						<span class="input-group-btn">
+						<button type="submit" class="btn btn-primary" id="button1">Submit</button>
+						</span>
+					</div>
 				</form>
-		  </div>
-		  <div class="col-lg-6"></div>
+			</div>
+			<div class="col-lg-9"></div>
 		</div>
 		<hr>
 		<div class="row">
-		  <div class="col-md-4" id="symbol">
-		  	<h4>Symbol</h4>
+			<div class="col-md-4" id="symbol">
+				<h4>Symbol</h4>
 				<ul id="symbolArea"></ul>
 				<div id="symbolHistory"></div>
 				<hr>
-		  </div>
-		  <div class="col-md-4" id="stockInfoArea">
-		  	<h4>Info</h4>
+			</div>
+			<div class="col-md-4" id="stockInfoArea">
+				<h4>Info</h4>
+				<p id="stockInfoStart"></p>
 				<hr>
-		  </div>
+			</div>
 			<div class="col-md-4" id="stockArea"></div>
 		</div>
 	</div>
@@ -46,6 +51,7 @@
 	<!-- scripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 	<script src="js/app.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </body>
+
 </html>
