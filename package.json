@@ -1,0 +1,29 @@
+{
+  "name": "stockmarket_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbilliau/stockMarketQuotes_API.git"
+  },
+  "author": "cbilliau",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cbilliau/stockMarketQuotes_API/issues"
+  },
+  "homepage": "https://github.com/cbilliau/stockMarketQuotes_API#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "bootstrap": "^3.3.6",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.4"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0"
+  }
+}
