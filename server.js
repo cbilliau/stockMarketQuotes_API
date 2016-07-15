@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 
-var config = require('./config');// Pulls in the url for the db based on what environ node running in.
+var config = require('./config/config');// Pulls in the url for the db based on what environ node running in.
 
 var User = require('./models/users');// Pulls in the schema mongoose will use
 
@@ -37,7 +37,7 @@ app.get('/users', function(request, response) {
 	// 'User.find' is what sends a query to the db
 	User.find(function(err, users)	{
 		if (err)	{
-			return ressponse.status(500).json({
+			return response.status(500).json({
 				message: 'Internal Server Error'
 			});
 		}
@@ -64,16 +64,15 @@ app.post('/users', function(request, response) {
 
 // Get one user
 app.get('/users/:id', function(request, response) {
-			var targetID = request.params;
-			console.log(targetID);
+			var targetID = request.params.id;
 			User.findById(targetID, function(err, user)	{
 				if (err) {
 		      return response.status(500).json({
 		          message: 'Internal Server Error'
 		      });
 		    }
-				console.log(user);
-			response.status(200).json({});
+				// console.log(user);
+			response.status(200).json(user);
 		});
 });
 

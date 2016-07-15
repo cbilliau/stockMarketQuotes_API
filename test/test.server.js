@@ -1,3 +1,6 @@
+global.DATABASE_URL = 'mongodb://localhost/stockMarketApp-test';
+process.env.NODE_ENV = 'us';
+
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../server.js');
@@ -69,34 +72,33 @@ describe('Stock Market App', function() {
                 done();
             });
     });
-    it('should get a user on get', function(done) {
+    it('should get a user on get ', function(done) {
         var targetID;
         chai.request(app)
             .get('/users')
             .end(function(err, res) {
-              // console.log(res.body);
-              targetID = res.body[0]._id;
-              // console.log(targetID);
-              chai.request(app)
-                  .get('/users/' + targetID)
-                  .end(function(err, res) {
-                    console.log(res.body);
-                    should.equal(err, null);
-                    res.should.have.status(200);
-                    res.should.be.json;
-                    res.body.should.be.a('array');
-                    res.body.should.have.property('_id');
-                    res.body.should.have.property('username');
-                    res.body.should.have.property('password');
-                    res.body.should.have.property('stocks');
-                    res.body.stocks.should.be.a('array');
-                    res.body.username.should.be.equal('Test User');
-                    res.body.password.should.be.equal('password');
-                    res.body.stocks[0].should.be.equal('AAPL');
-                    res.body.stocks[1].should.be.equal('YHOO');
-                    res.body.stocks[2].should.be.equal('FB');
-                    done();
-                  })
+                targetID = res.body[0]._id;
+                console.log(targetID);
+                chai.request(app)
+                    .get('/users/' + targetID)
+                    .end(function(err, res) {
+                        console.log(res.body);
+                        should.equal(err, null);
+                        res.should.have.status(200);
+                        res.should.be.json;
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('_id');
+                        res.body.should.have.property('username');
+                        res.body.should.have.property('password');
+                        res.body.should.have.property('stocks');
+                        res.body.stocks.should.be.a('array');
+                        res.body.username.should.be.equal('Test User');
+                        res.body.password.should.be.equal('password');
+                        res.body.stocks[0].should.be.equal('AAPL');
+                        res.body.stocks[1].should.be.equal('YHOO');
+                        res.body.stocks[2].should.be.equal('FB');
+                        done();
+                    })
             })
     });
 

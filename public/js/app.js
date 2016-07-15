@@ -10,6 +10,15 @@ var modApi = {};
 // view obj
 var View = {};
 
+
+$.ajax({
+  method: 'get',
+  url: '/users',
+  })
+  .success(function(res){
+    console.log(res);
+  })
+
 // get ticker symbol
 modApi.getTickerSymbol = function(name) {
     var url = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/jsonp"
