@@ -64,7 +64,17 @@ app.post('/users', function(request, response) {
 
 // Get one user
 app.get('/users/:id', function(request, response) {
-
+			var targetID = request.params;
+			console.log(targetID);
+			User.findById(targetID, function(err, user)	{
+				if (err) {
+		      return response.status(500).json({
+		          message: 'Internal Server Error'
+		      });
+		    }
+				console.log(user);
+			response.status(200).json({});
+		});
 });
 
 // Edit one user
