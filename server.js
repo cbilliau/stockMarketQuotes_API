@@ -76,7 +76,20 @@ app.get('/users/:id', function(request, response) {
     });
 });
 
-// Edit one user
+app.get('users/:name', function(request, response) {
+		var userName = request.body.username;
+		var password = request.body.password;
+		User.findOne({username: userName}, function(err, user) {
+			if (err) {
+				return respone.status(500).json({
+					message: 'Internal Server Error'
+				});
+			}
+			response.status(200).json(user);
+		});
+});
+
+// Add stock to user
 app.put('/users/:id', function(request, response) {
     var id = request.body.id;
     var currentStocks = request.body.stocks
@@ -98,7 +111,7 @@ app.put('/users/:id', function(request, response) {
     });
 });
 
-// Delete one user
+// Delete one stock for user
 app.delete('/users/:id', function(request, response) {
     var id = request.params.id;
     User.findByIdAndRemove(id, function(err) {

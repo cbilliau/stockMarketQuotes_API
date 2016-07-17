@@ -43,9 +43,9 @@
 				<h4 class="text-left login-title">Account Login/Create</h4>
 				<form class="form-signin">
 					<div class="input-group input-group-sm">
-						<input type="text" class="form-control" placeholder="User Name" required>
-						<input type="password" class="form-control" placeholder="Password" required>
-						<button class="btn btn-sm btn-primary btn-block" type="submit">
+						<input type="text" class="form-control" id='userName' placeholder="User Name" required>
+						<input type="password" class="form-control" id='password' placeholder="Password" required>
+						<button class="btn btn-sm btn-primary btn-block" id="submitUser" type="submit">
 							Sign in</button>
 					</div>
 				</form>
@@ -72,15 +72,17 @@
 			<!-- Stock data display -->
 			<div class="col-md-4" id="stockInfoArea">
 				<h4>Info</h4>
-				<p id="stockInfoStart"></p>
+				<p id="stockInfoStart">
+				<!-- Stock info field -->
+				</p>
 				<!-- Add/remove button -->
 				<div class="btn-group">
 					<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Action <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
-						<li><a href="#">Add Stock to Portfolio</a></li>
-						<li><a href="#">Remove Stock from Portfolio</a></li>
+						<li><a href="#" id="addStock">Add Stock to Portfolio</a></li>
+						<li><a href="#" id="deleteStock">Remove Stock from Portfolio</a></li>
 					</ul>
 				</div>
 				<hr>
