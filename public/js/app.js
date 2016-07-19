@@ -2,11 +2,10 @@
 
 // cache object
 var Data = {
-    searchHistory: [],
     appUser: {
-        id: null,
-        username: '',
-        stocks: []
+      _id: null,
+      username: '',
+      stocks: []
     },
     currentStockViewed: ''
 };
@@ -16,124 +15,87 @@ var modApi = {};
 // view obj
 var View = {};
 
+// user obj
 var User = {};
 
-$.ajax({
-        method: 'get',
-        url: '/users',
-    })
-    .success(function(res) {
-        console.log(res);
-    })
+// $.ajax({
+//         method: 'get',
+//         url: '/users',
+//     })
+//     .success(function(res) {
+//         console.log(res);
+//     })
 
 // User
-// Assign current logged in user data to variables
-User.appUser = function(results) {
-    Data.appUser.id = results._id;
-    Data.appUser.username = results.username;
-    Data.appUser.stocks = results.stocks;
-};
+User.pushStockToArray = function(stockToAdd) {
+  if (!Array.isArray(Data.appUser.stocks)) {
+    Data.appUser.stocks = [];
+    Data.appUser.stocks.push(stockToAdd);
+    return Data.appUser.stocks;
+  }
+  Data.appUser.stocks.push(stockToAdd);
+  return Data.appUser.stocks;
+}
 
-// Assign current stock being viewed to user variables
-User.currentStockViewed = function(results) {
-    Data.currentStockViewed = results.name;
-};
-
-User.addStockToUser = function(results) {
-    var newStock = results.stocks;
-    Data.appUser.stocks.push(newStock);
-};
-
-
-// api
-modApi.getUser = function(userName, password) {
-    var url = '/users/:name';
-    var route = 'post';
-    var user = {
-        username: userName,
-        password: password
-    };
+// Api
+modApi.getUser = function(userName, passWord) {
     var request = {
-        method: route,
-        url: url,
+        url: '/users/' + userName,
+        method: 'get',
+        dataType: 'json',
         data: {
-            user
+            username: userName,
+            password: passWord
         }
-    };
-    console.log(request);
-    return $ajax(request);
-};
+    }
+    return $.ajax(request);
+}
 
 // create user
-modApi.createUser = function(userName, password, stocks) {
-    var url = '/users';
-    var route = 'post';
-    var newUser = {
-        username: userName,
-        password: password,
-        stocks: stocks
-    };
+modApi.createUser = function(userName, passWord) {
     var request = {
-        method: route,
-        url: url,
-        data: {
-            newUser
-        }
-    };
+        url: '/users',
+        method: 'post',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: '{  "username": userName, "password": passWord   }'
+    }
     console.log(request);
-    return $ajax(request);
-};
+    return $.ajax(request);
+}
 
-// add stock
-modApi.addStock = function(symbol, userId) {
-    var url = '/users/:id';
-    var route = 'post';
-    var stockAdd = {
-        id: userId,
-        stocks: symbol
-    };
+// update user stock array in db
+modApi.updateStock = function(stockArr, userId)  {
+    console.log(stockArr);
     var request = {
-        method: route,
-        url: url,
-        data: {
-            stockAdd
-        }
-    };
+        url: '/users/' + userId,
+        type: 'put',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({ stocks: stockArr}),
+        success: function (msg) {
+            alert('Success');
+          },
+        error: function (err){
+            alert('Error');
+          }
+    }
     console.log(request);
-    return $ajax(request);
-};
-
-// remove stock
-modApi.removeStock = function(symbol, userId) {
-    var url = '/users/:id';
-    var route = 'delete';
-    var stockRemove = {
-        id: userId,
-        stocks: symbol
-    };
-    var request = {
-        method: route,
-        url: url,
-        data: {
-            stockRemove
-        }
-    };
-    console.log(request);
-    return $ajax(request);
-};
+    $.ajax(request);
+}
 
 // get ticker symbol
 modApi.getTickerSymbol = function(name) {
     var url = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/jsonp"
     var request = {
-        url: url,
-        data: {
-            input: name
-        },
-        callback: "my_function",
-        dataType: "jsonp"
-    }
-    console.log(request);
+            url: url,
+            data: {
+                input: name
+            },
+            callback: "my_function",
+            dataType: "jsonp"
+        }
+        // console.log(request);
     return $.ajax(request);
 
 };
@@ -239,53 +201,55 @@ $(function() {
     $('#symbol').on('click', '.stock', function(e) {
         e.preventDefault();
         var stock = $(this).text();
+        console.log(stock);
+        Data.currentStockViewed = stock; // Assign current stock to user variables
         var results = modApi.getStockData(stock)
             .then(function(results) {
                 View.postStockResults(results);
-                // Assign current stock to user variables
-                User.currentStockViewed(results);
             });
     });
     //submit user button (needs test)
     $('button#submitUser').on('click', function(e) {
         e.preventDefault();
-        var username = $('input#username').text();
-        var password = $('input#password').text();
-        var results = modApi.getUser(username, password)
+        var username = $('input#userName').val();
+        var password = $('input#password').val();
+        var results = modApi.getUser(username, password) //look up sending username/password basic auth through jquery
             .then(function(results) {
-                if (results = null) {
-                    var results = modApi.createUser(username, password)
-                        .then(function(results) {
-                            View.displayUserData(results);
-                            User.appUser(results);
+                if (results == null) {
+                    var newUser = modApi.createUser(username, password)
+                        .then(function(newUser) {
+                            console.log(newUser);
                         });
+                } else {
+                  Data.appUser = results; // Assign results to Data.appUser
+                  console.log(Data.appUser);
                 }
-                // Assign user data to app variables
-                User.appUser(results);
-                View.displayUserData();
             });
     });
     // add stock
     $('a#addStock').on('click', function(e) {
         e.preventDefault();
         var stockToAdd = Data.currentStockViewed;
-        var userId = Data.appUser.id;
-        var results = modApi.addStock(stockToAdd, userId)
+        console.log(stockToAdd);
+        var stockArr = User.pushStockToArray(stockToAdd);
+        console.log(stockArr);
+        var userId = Data.appUser._id;
+        var results = modApi.updateStock(stockArr, userId)
             .then(function(results) {
-                User.addStockToUser(results);
-                View.displayUserData();
+              console.log(results);
             });
-    });
-    // delete stock
-    $('a#deletestock').on('click', function(e) {
-        e.preventDefault();
-        var stockToRemove = Data.currentStockViewed;
-        var userId = Data.appUser.id;
-        var results = modApi.removeStock(stockToRemove, userId)
-            .then(function(results) {
-                User.removeStockFromUser(results);
-                View.displayUserData();
-            });
-    })
 
+    });
 });
+// delete stock
+$('a#deletestock').on('click', function(e) {
+    e.preventDefault();
+    var stockToRemove = Data.currentStockViewed;
+    var userId = Data.appUser._id;
+    var results = modApi.removeStock(stockToRemove, userId)
+        .then(function(results) {
+
+        });
+});
+
+// });
