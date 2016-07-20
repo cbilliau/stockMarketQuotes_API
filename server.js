@@ -86,7 +86,6 @@ app.get('/users', passport.authenticate('basic', {
 
 // Create one user
 app.post('/users', function(req, res) {
-    console.log(req.body)
     if (!req.body) {
         return res.status(400).json({
             message: "No request body"
@@ -192,9 +191,7 @@ app.get('/users/:username', passport.authenticate('basic', {
 app.put('/users/:id', passport.authenticate('basic', {
     session: false
 }), function(request, response) {
-    var id = request.user._id;
-    console.log(id);
-    console.log(request.body);
+    var id = request.body._id;
     var newStockArr = request.body.stocks;
     User.findByIdAndUpdate(id, {
         stocks: newStockArr

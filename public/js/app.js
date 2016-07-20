@@ -3,9 +3,9 @@
 // cache object
 var Data = {
     appUser: {
-      _id: null,
-      username: '',
-      stocks: []
+        _id: null,
+        username: '',
+        stocks: []
     },
     currentStockViewed: ''
 };
@@ -28,13 +28,24 @@ var User = {};
 
 // User
 User.pushStockToArray = function(stockToAdd) {
-  if (!Array.isArray(Data.appUser.stocks)) {
-    Data.appUser.stocks = [];
-    Data.appUser.stocks.push(stockToAdd);
-    return Data.appUser.stocks;
-  }
-  Data.appUser.stocks.push(stockToAdd);
-  return Data.appUser.stocks;
+    var array = Data.appUser.stocks;
+    if (!Array.isArray(array)) {
+        array = [];
+        array.push(stockToAdd);
+        return array;
+    }
+    array.push(stockToAdd);
+    return array;
+}
+
+User.removeStockFromArray = function(stockToRemove) {
+    var array = Data.appUser.stocks;
+    if (!Array.isArray(Data.appUser.stocks) || (array.indexOf(stockToRemove) == -1)) {
+        return array;
+    }
+    var i = array.indexOf(stockToRemove);
+    array.splice(i, 1);
+    return array;
 }
 
 // Api
@@ -51,37 +62,35 @@ modApi.getUser = function(userName, passWord) {
     return $.ajax(request);
 }
 
-// create user
 modApi.createUser = function(userName, passWord) {
     var request = {
         url: '/users',
         method: 'post',
         contentType: 'application/json',
         dataType: 'json',
-        data: '{  "username": userName, "password": passWord   }'
+        data: JSON.stringify({
+            username: userName,
+            password: passWord
+        })
     }
     console.log(request);
     return $.ajax(request);
 }
 
-// update user stock array in db
-modApi.updateStock = function(stockArr, userId)  {
+modApi.updateStock = function(stockArr, userId) {
     console.log(stockArr);
     var request = {
         url: '/users/' + userId,
         type: 'put',
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify({ stocks: stockArr}),
-        success: function (msg) {
-            alert('Success');
-          },
-        error: function (err){
-            alert('Error');
-          }
+        data: JSON.stringify({
+            _id: userId,
+            stocks: stockArr
+        }),
     }
     console.log(request);
-    $.ajax(request);
+    return $.ajax(request);
 }
 
 // get ticker symbol
@@ -115,17 +124,19 @@ modApi.getStockData = function(stockSymbol) {
 };
 
 // generate views
-// clear symbol area
+
 View.clearArea = function(el) {
-    el.innerHTML = "";
+    while (el.firstChild) el.removeChild(el.firstChild);
 };
 
-// fetch name from input
+View.clearForm = function(formId) {
+    document.getElementById(formId).reset();
+}
+
 View.fetchUserQuery = function() {
     return $('input#companyName').val();
 };
 
-// post results from symbol api
 View.postSymbolResults = function(results) {
     var el = document.getElementById('symbolArea');
     View.clearArea(el);
@@ -135,14 +146,12 @@ View.postSymbolResults = function(results) {
     });
 };
 
-// generate symbol html
 View.genSymbolResultsHtml = function(item) {
     var html = "";
     html += "<li><a class='stock'>" + item.Symbol + "</a>, " + item.Name + ", " + item.Exchange + "</li>";
     return html;
 };
 
-// post stock info
 View.postStockResults = function(stockData) {
     var el = document.getElementById('stockInfoStart');
     View.clearArea(el);
@@ -163,7 +172,6 @@ View.postStockResults = function(stockData) {
     el.innerHTML = html;
 };
 
-// generate stock html
 View.genStockResultsHtml = function(i, data) {
     var html = "";
     html += "<p><b>" + i + "</b>: " + data + "</p>";
@@ -173,19 +181,18 @@ View.genStockResultsHtml = function(i, data) {
 View.displayUserData = function() {
     var username = Data.appUser.username;
     var stocks = Data.appUser.stocks;
-    var el = document.getElementById('userName');
+    var el = document.getElementById('user');
     var el1 = document.getElementById('userStockList');
     var html = el.innerHTML;
     html = html + username;
     var html1 = el1.innerHTML;
     html1 = html1 + stocks;
-    View.clearArea(el);
-    View.clearArea(el1);
     el.innerHTML = html;
     el1.innerHTML = html1;
 }
 
-// Doc Ready
+
+
 $(function() {
     // get stock symbol
     $('form').submit(function(e) {
@@ -213,16 +220,20 @@ $(function() {
         e.preventDefault();
         var username = $('input#userName').val();
         var password = $('input#password').val();
+        View.clearForm("signin");
         var results = modApi.getUser(username, password) //look up sending username/password basic auth through jquery
             .then(function(results) {
                 if (results == null) {
                     var newUser = modApi.createUser(username, password)
                         .then(function(newUser) {
-                            console.log(newUser);
+                            Data.appUser = results; // Assign results to Data.appUser
+                            View.displayUserData();
+                            console.log(Data.appUser);
                         });
                 } else {
-                  Data.appUser = results; // Assign results to Data.appUser
-                  console.log(Data.appUser);
+                    Data.appUser = results; // Assign results to Data.appUser
+                    View.displayUserData();
+                    console.log(Data.appUser);
                 }
             });
     });
@@ -230,26 +241,26 @@ $(function() {
     $('a#addStock').on('click', function(e) {
         e.preventDefault();
         var stockToAdd = Data.currentStockViewed;
-        console.log(stockToAdd);
         var stockArr = User.pushStockToArray(stockToAdd);
-        console.log(stockArr);
         var userId = Data.appUser._id;
         var results = modApi.updateStock(stockArr, userId)
             .then(function(results) {
-              console.log(results);
+                Data.appUser.stocks = results.stocks;
+                View.displayUserData();
             });
 
     });
-});
-// delete stock
-$('a#deletestock').on('click', function(e) {
-    e.preventDefault();
-    var stockToRemove = Data.currentStockViewed;
-    var userId = Data.appUser._id;
-    var results = modApi.removeStock(stockToRemove, userId)
-        .then(function(results) {
 
-        });
+    // delete stock
+    $('a#deleteStock').on('click', function(e) {
+        e.preventDefault();
+        var stockToRemove = Data.currentStockViewed;
+        var stockArr = User.removeStockFromArray(stockToRemove);
+        var userId = Data.appUser._id;
+        var results = modApi.updateStock(stockArr, userId)
+            .then(function(results) {
+                Data.appUser.stocks = results.stocks;
+                View.displayUserData();
+            });
+    });
 });
-
-// });
