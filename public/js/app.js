@@ -182,7 +182,9 @@ View.displayUserData = function() {
     var username = Data.appUser.username;
     var stocks = Data.appUser.stocks;
     var el = document.getElementById('user');
+    View.clearArea(el);
     var el1 = document.getElementById('userStockList');
+    View.clearArea(el1);
     var html = el.innerHTML;
     html = html + username;
     var html1 = el1.innerHTML;
