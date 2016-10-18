@@ -16,6 +16,7 @@ app.use(passport.initialize()); // Use passport to authorize user
 
 // Strategy for hidding endpoint from no-users
 var strategy = new BasicStrategy(function(username, password, callback) {
+    console.log('ping');
     User.findOne({
         username: username
     }, function(err, user) {
@@ -51,6 +52,7 @@ var runServer = function(callback) {
     // Connect to db
     mongoose.connect(config.DATABASE_URL, function(err) {
         if (err) {
+            console.log('cannot connect to db');
             return callback(err);
         }
         // Rcv from app
@@ -69,8 +71,7 @@ if (require.main === module) { // This trick makes file an executable script and
 };
 
 // Get all users
-app.get('/users', passport.authenticate('basic', {
-    session: false
+app.get('/users', passport.authenticate('basic', {    session: false
 }), function(request, response) {
     // 'User.find' is what sends a query to the db
     User.find(function(err, users) {
@@ -159,8 +160,10 @@ app.post('/users', function(req, res) {
 
             user.save(function(err) {
                 if (err) {
+                    console.log(err);
                     return res.status(500).json({
-                        message: 'Internal server error'
+                        message: 'Internal server error',
+                        error: err
                     });
                 }
 
