@@ -2,7 +2,7 @@
 
 // cache object
 var Data = {
-    searchHistory: [],
+    searchHistory: []
 };
 // api object
 var modApi = {};
@@ -92,27 +92,25 @@ View.postStockResults = function(stockData) {
 
 // generate stock html
 View.genStockResultsHtml = function(i, data) {
-        var html = "";
-        html += "<p><b>" + i + "</b>: " + data + "</p>";
-        return html;
-    }
-    // get query from input
+    var html = "";
+    html += "<p><b>" + i + "</b>: " + data + "</p>";
+    return html;
+}
+// get query from input
 $(function() {
     $('form').submit(function(e) {
         e.preventDefault();
         // View.clearArea();
         var query = View.fetchUserQuery();
-        var results = modApi.getTickerSymbol(query)
-            .then(function(results) {
-                View.postSymbolResults(results);
-            });
+        var results = modApi.getTickerSymbol(query).then(function(results) {
+            View.postSymbolResults(results);
+        });
     });
     $('#symbol').on('click', '.stock', function(e) {
         e.preventDefault();
         var stock = $(this).text();
-        var results = modApi.getStockData(stock)
-            .then(function(results) {
-                View.postStockResults(results);
-            });
+        var results = modApi.getStockData(stock).then(function(results) {
+            View.postStockResults(results);
+        });
     });
 });
