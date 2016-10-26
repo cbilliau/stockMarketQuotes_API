@@ -222,7 +222,7 @@ $(function() {
         e.preventDefault();
         var username = $('input#userName').val();
         var password = $('input#password').val();
-        View.clearForm("signin");
+        View.clearForm('signin');
         var results = modApi.getUser(username, password) //look up sending username/password basic auth through jquery
             .then(function(results) {
                 if (results == null) {

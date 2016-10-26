@@ -1,6 +1,6 @@
 // Define url variable
-var localTest = 'mongodb://localhost/stockMarketApp-test';
-var localProd = 'mongodb://localhost/stockMarketApp-prod';
+var localTest = 'mongodb://localhost/stockMarketApp';
+var localProd = 'mongodb://localhost/stockMarketApp-dev';
 
 exports.DATABASE_URL = process.env.DATABASE_URL ||
                        global.DATABASE_URL ||

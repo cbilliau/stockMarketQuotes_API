@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config/config'); // Pulls in the url for the db based on what environ node running in.
 var User = require('./models/users'); // Pulls in the schema mongoose will use
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var passport = require('passport'); // For auth
 var BasicStrategy = require('passport-http').BasicStrategy; // For auth
 
@@ -16,7 +16,8 @@ app.use(passport.initialize()); // Use passport to authorize user
 
 // Strategy for hidding endpoint from no-users
 var strategy = new BasicStrategy(function(username, password, callback) {
-    console.log('ping');
+    console.log('Basic Strategy...');
+
     User.findOne({
         username: username
     }, function(err, user) {

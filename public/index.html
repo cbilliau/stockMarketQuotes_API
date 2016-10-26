@@ -1,100 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="css/style.css">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	<title>MarkitDirect API</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/style.css">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <title>MarkitDirect API</title>
+    </head>
 
-<body>
-	<div class="container-fluid">
+    <body>
+			<div class="container">
+				<div class="container-fluid">
 
-		<!-- Title -->
-		<div class="row" id="header">
-			<div class="col-md-12">
-				<h2>Stock Market Quotes</h2>
-				<h6>Quotes from <em>Marketondemand.com</em></h6>
-			</div>
-		</div>
+            <!-- Title -->
+            <div class="row" id="header">
+                <div class="col-md-12">
+                    <h2>Stock Market Quotes</h2>
+                    <h6>Quotes from
+                        <em>Marketondemand.com</em>
+                    </h6>
+                </div>
+            </div>
 
-		<!-- Enter stock symbol -->
-		<div class="row" id="enterName">
-			<div class="col-md-3">
-				<form>
-					<div class="input-group input-group-sm">
-						<input type="text" class="form-control" id="companyName" placeholder="Enter Company name..." onclick="this.value=''" autofocus>
-						<span class="input-group-btn">
-						<button type="submit" class="btn btn-primary" id="button1">Submit</button>
-						</span>
-					</div>
-				</form>
-			</div>
-			<div class="col-md-9"></div>
-		</div>
-		<hr>
+            <!-- Enter stock symbol -->
+            <div class="row" id="enterName">
+                <div class="col-md-3">
+                    <form>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" id="companyName" placeholder="Enter Company name..." onclick="this.value=''" autofocus>
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary" id="button1">Submit</button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-9"></div>
+            </div>
+            <hr>
 
-		<!-- Login / Create account -->
-		<div class="row" id="account">
-			<div class="col-md-3">
-				<h4 class="text-left login-title">Account Login/Create</h4>
-				<form class="form-signin" id="signin">
-					<div class="input-group input-group-sm">
-						<input type="text" class="form-control" id='userName' placeholder="User Name" required>
-						<input type="password" class="form-control" id='password' placeholder="Password" required>
-						<button class="btn btn-sm btn-primary btn-block" id="submitUser" type="submit">
-							Sign in</button>
-					</div>
-				</form>
-			</div>
-			<!-- Account Portfolio -->
-			<div class="col-md-1"></div>
-			<div class="col-md-8">
-				<h4 class="text">Portfolio</h4>
-				<p class="text">User Name: <span class="text" id="user"></span></p>
-				<p class="text">Stocks: <span class="text" id="userStockList"></span ></p>
-			</div>
-		</div>
-		<hr>
+            <!-- Login / Create account -->
+            <div class="row" id="account">
+                <div class="col-md-3">
+                    <h4 class="text-left login-title">Account Login/Create</h4>
+                    <form class="form-signin" id="signin">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" id='userName' placeholder="User Name" required>
+                            <input type="password" class="form-control" id='password' placeholder="Password" required>
+                            <button class="btn btn-sm btn-primary btn-block" id="submitUser" type="submit">
+                                Sign in</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Account Portfolio -->
+                <div class="col-md-1"></div>
+                <div class="col-md-8">
+                    <h4 class="text">Portfolio</h4>
+                    <p class="text">User Name:
+                        <span class="text" id="user"></span>
+                    </p>
+                    <p class="text">Stocks:
+                        <span class="text" id="userStockList"></span >
+                    </p>
+                </div>
+            </div>
+            <hr>
 
-		<!-- Stock Data Display -->
-		<!-- Stock symbol display -->
-		<div class="row">
-			<div class="col-md-4" id="symbol">
-				<h4>Symbol</h4>
-				<ul id="symbolArea"></ul>
-				<div id="symbolHistory"></div>
-				<hr>
+            <!-- Stock Data Display -->
+            <!-- Stock symbol display -->
+            <div class="row">
+                <div class="col-md-4" id="symbol">
+                    <h4>Symbol</h4>
+                    <ul id="symbolArea"></ul>
+                    <div id="symbolHistory"></div>
+                    <hr>
+                </div>
+                <!-- Stock data display -->
+                <div class="col-md-4" id="stockInfoArea">
+                    <h4>Info</h4>
+                    <p id="stockInfoStart">
+                        <!-- Stock info field -->
+                    </p>
+                    <!-- Add/remove button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#" id="addStock">Add Stock to Portfolio</a>
+                            </li>
+                            <li>
+                                <a href="#" id="deleteStock">Remove Stock from Portfolio</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr>
+                </div>
+                <div class="col-md-4" id="stockArea"></div>
+            </div>
+        </div>
 			</div>
-			<!-- Stock data display -->
-			<div class="col-md-4" id="stockInfoArea">
-				<h4>Info</h4>
-				<p id="stockInfoStart">
-				<!-- Stock info field -->
-				</p>
-				<!-- Add/remove button -->
-				<div class="btn-group">
-					<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu">
-						<li><a href="#" id="addStock">Add Stock to Portfolio</a></li>
-						<li><a href="#" id="deleteStock">Remove Stock from Portfolio</a></li>
-					</ul>
-				</div>
-				<hr>
-			</div>
-			<div class="col-md-4" id="stockArea"></div>
-		</div>
-	</div>
 
-	<!-- scripts -->
-	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-	<script src="js/app.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-</body>
+        <!-- scripts -->
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+        <script src="js/app.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    </body>
 
 </html>
