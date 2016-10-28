@@ -1,7 +1,7 @@
 # Stock Market Quotes App - jQuery & Ajax
 
 jQuery app for searching company stock symbols and getting most recent stock quotes.
-![screenshot](/public/assets/stock.png "screenshot")
+![screenshot](/assets/stock.png "screenshot")
 
 ## Overview
 
